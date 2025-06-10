@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pheap setthi- IT Developer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom global styles */
+        body {
+            font-family: 'Inter', 'Kantumruy Pro', sans-serif; /* Added Kantumruy Pro for Khmer */
+            background-color: #f0f4f8; /* Light gray-blue background */
+            color: #1e293b; /* Dark slate text */
+            scroll-behavior: smooth;
+        }
+
+        /* Apply Khmer font specifically to elements with Khmer text if needed,
+           or rely on browser font fallback. For better control: */
+        [lang="km"] body, [lang="km"] [data-lang-key] {
+            font-family: 'Kantumruy Pro', 'Inter', sans-serif;
+        }
+
+
+        /* Animation for elements fading in on scroll */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom scrollbar (optional, for aesthetics) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0; /* Lighter slate */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6; /* Blue-500 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb; /* Blue-600 */
+        }
+
+        /* Styling for active navigation link */
+        .nav-link-active {
+            color: #3b82f6; /* Blue-500 */
+            font-weight: 600;
+        }
+        
+        /* Enhanced button styles */
+        .btn {
+            @apply inline-block px-6 py-3 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-opacity-50;
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500;
+        }
+        .btn-secondary {
+            @apply bg-gray-700 text-white hover:bg-gray-800 focus:ring-gray-600;
+        }
+        .btn-outline {
+            @apply bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-500;
+        }
+
+        /* Project card hover effect */
+        .project-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Language switcher style */
+        .lang-switcher button {
+            @apply px-3 py-1 text-sm rounded-md transition-colors duration-200;
+        }
+        .lang-switcher button.active {
+            @apply bg-blue-600 text-white;
+        }
+        .lang-switcher button:not(.active) {
+            @apply bg-gray-200 text-gray-700 hover:bg-gray-300;
+        }
+
+        /* Mobile menu icon lines */
+        #menu-button span {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        #menu-button.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        #menu-button.open span:nth-child(2) {
+            opacity: 0;
+        }
+        #menu-button.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Profile image styling in Hero */
+        .hero-profile-img {
+            @apply w-48 h-48 md:w-64 md:h-64 rounded-full object-cover border-4 border-white shadow-xl mx-auto;
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors duration-300" data-lang-key="logo">Pheap setthi</a>
+            
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a href="#about" class="text-gray-600 hover:text-blue-600 transition-colors duration-300 nav-link" data-lang-key="navAbout">About</a>
+                <a href="#skills" class="text-gray-600 hover:text-blue-600 transition-colors duration-300 nav-link" data-lang-key="navSkills">Skills</a>
+                <a href="#projects" class="text-gray-600 hover:text-blue-600 transition-colors duration-300 nav-link" data-lang-key="navProjects">Projects</a>
+                <a href="#contact" class="text-gray-600 hover:text-blue-600 transition-colors duration-300 nav-link" data-lang-key="navContact">Contact</a>
+                <div class="lang-switcher flex space-x-1 ml-4">
+                    <button id="lang-en" class="active">EN</button>
+                    <button id="lang-km">KM</button>
+                </div>
+            </nav>
+
+            <div class="md:hidden flex items-center">
+                 <div class="lang-switcher flex space-x-1 mr-3">
+                    <button id="lang-en-mobile" class="active">EN</button>
+                    <button id="lang-es-mobile">ES</button>
+                    <button id="lang-km-mobile">KM</button>
+                </div>
+                <button id="menu-button" class="text-gray-700 focus:outline-none">
+                    <span class="block w-6 h-0.5 bg-current mb-1.5"></span>
+                    <span class="block w-6 h-0.5 bg-current mb-1.5"></span>
+                    <span class="block w-6 h-0.5 bg-current"></span>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg py-2">
+            <a href="#about" class="block px-6 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 nav-link" data-lang-key="navAboutMobile">About</a>
+            <a href="#skills" class="block px-6 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 nav-link" data-lang-key="navSkillsMobile">Skills</a>
+            <a href="#projects" class="block px-6 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 nav-link" data-lang-key="navProjectsMobile">Projects</a>
+            <a href="#contact" class="block px-6 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-300 nav-link" data-lang-key="navContactMobile">Contact</a>
+        </div>
+    </header>
+
+    <section id="hero" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-700 text-white pt-24 pb-12 md:pt-20 fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 md:gap-12">
+                <div class="w-full md:w-1/3 flex justify-center order-1 md:order-2 animate-fade-in-down">
+                    <img src="setthi2.png" alt="Your Name - Profile Picture" class="hero-profile-img" style="border-radius: 10%;">
+                </div>
+                <div class="w-full md:w-2/3 text-center md:text-left order-2 md:order-1">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 animate-fade-in-down" data-lang-key="heroTitle">Hello, I'm Pheap setthi</h1>
+                    <p class="text-lg md:text-xl lg:text-2xl mb-8 animate-fade-in-up" data-lang-key="heroSubtitle">A Passionate IT Developer Crafting Digital Solutions.</p>
+                    <a href="#projects" class="btn btn-outline border-white text-white hover:bg-white hover:text-blue-700 animate-bounce-slow" data-lang-key="heroCTA">View My Work</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-white fade-in-section">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-2 text-gray-800" data-lang-key="aboutTitle">About Me</h2>
+            <div class="w-20 h-1 bg-blue-600 mx-auto mb-12"></div>
+            <div class="max-w-3xl mx-auto text-center text-gray-600 space-y-6">
+                <p data-lang-key="aboutP1">I am a dedicated and results-driven IT Developer with a strong foundation in web development, software engineering, and problem-solving. My journey in tech is fueled by a constant desire to learn, innovate, and create impactful digital experiences.</p>
+                <p data-lang-key="aboutP2">With expertise in modern frameworks and a keen eye for detail, I specialize in building responsive, user-friendly applications. I thrive in collaborative environments and am always eager to take on new challenges that push the boundaries of technology.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-20 bg-gray-50 fade-in-section">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-2 text-gray-800" data-lang-key="skillsTitle">My Skills</h2>
+        <div class="w-20 h-1 bg-blue-600 mx-auto mb-12"></div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
+                <img src="https://cdn.worldvectorlogo.com/logos/laravel-2.svg" alt="Laravel" class="w-16 h-16 mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-gray-700">Laravel</h3>
+                <p class="text-gray-500 text-sm">Backend</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
+                <img src="https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" alt="Node.js" class="w-16 h-16 mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-gray-700">Node.js</h3>
+                <p class="text-gray-500 text-sm">Backend</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
+                <img src="https://cdn.worldvectorlogo.com/logos/next-js.svg" alt="Next.js" class="w-16 h-16 mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-gray-700">Next.js</h3>
+                <p class="text-gray-500 text-sm">Frontend</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
+                <img src="https://cdn.worldvectorlogo.com/logos/html-1.svg" alt="HTML5" class="w-16 h-16 mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-gray-700">HTML5</h3>
+                <p class="text-gray-500 text-sm">Structure</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
+                <img src="https://cdn.worldvectorlogo.com/logos/css-3.svg" alt="CSS3" class="w-16 h-16 mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-gray-700">CSS3</h3>
+                <p class="text-gray-500 text-sm">Styling</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
+                <img src="https://cdn.worldvectorlogo.com/logos/logo-javascript.svg" alt="JavaScript" class="w-16 h-16 mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-gray-700">JavaScript</h3>
+                <p class="text-gray-500 text-sm">Logic</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
+                <img src="https://cdn.worldvectorlogo.com/logos/figma-1.svg" alt="Figma" class="w-16 h-16 mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-gray-700">UX/UI (Figma)</h3>
+                <p class="text-gray-500 text-sm">Design</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
+                <img src="https://cdn.worldvectorlogo.com/logos/aws-2.svg" alt="AWS" class="w-16 h-16 mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-gray-700">AWS</h3>
+                <p class="text-gray-500 text-sm">Cloud</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
+                <img src="https://cdn.worldvectorlogo.com/logos/digital-ocean-icon.svg" alt="Digital Ocean" class="w-16 h-16 mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-gray-700">Digital Ocean</h3>
+                <p class="text-gray-500 text-sm">Cloud</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
+                <img src="https://cdn.worldvectorlogo.com/logos/google-cloud-1.svg" alt="Google Cloud" class="w-16 h-16 mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-gray-700">Google Cloud</h3>
+                <p class="text-gray-500 text-sm">Cloud</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+    <section id="projects" class="py-20 bg-white fade-in-section">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-2 text-gray-800" data-lang-key="projectsTitle">My Projects</h2>
+            <div class="w-20 h-1 bg-blue-600 mx-auto mb-12"></div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden project-card transition-all duration-300 ease-in-out">
+                    <img src="https://placehold.co/600x400/3B82F6/FFFFFF?text=Project+Alpha" alt="Project Alpha Screenshot" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-3 text-blue-700" data-lang-key="project1Title">Project Alpha</h3>
+                        <p class="text-gray-600 mb-4 text-sm" data-lang-key="project1Desc">An innovative web application for task management and team collaboration, built with modern technologies.</p>
+                        <div class="mb-4">
+                            <span class="inline-block bg-blue-100 text-blue-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techReact">next.js</span>
+                            <span class="inline-block bg-green-100 text-green-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techNode">Node.js</span>
+                            <span class="inline-block bg-yellow-100 text-yellow-700 text-xs font-semibold px-2.5 py-0.5 rounded-full" data-lang-key="techMongo">Postgresql</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="https://food-delivery-frontend-bice.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-xs" data-lang-key="btnDemo">Live Demo</a>
+                            <a href="#" class="btn btn-secondary text-xs" data-lang-key="btnSource">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden project-card transition-all duration-300 ease-in-out">
+                    <img src="https://placehold.co/600x400/10B981/FFFFFF?text=Project+Beta" alt="Project Beta Screenshot" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-3 text-green-700" data-lang-key="project2Title">Project Beta</h3>
+                        <p class="text-gray-600 mb-4 text-sm" data-lang-key="project2Desc">A data visualization dashboard that provides insights into market trends using Python and D3.js.</p>
+                         <div class="mb-4">
+                            <span class="inline-block bg-purple-100 text-purple-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techPythonP">Python</span>
+                            <span class="inline-block bg-red-100 text-red-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techD3">D3.js</span>
+                            <span class="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-2.5 py-0.5 rounded-full" data-lang-key="techFlask">Flask</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="#" class="btn bg-green-600 hover:bg-green-700 text-white text-xs focus:ring-green-500" data-lang-key="btnDemo">Live Demo</a>
+                            <a href="#" class="btn btn-secondary text-xs" data-lang-key="btnSource">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden project-card transition-all duration-300 ease-in-out">
+                     <img src="https://placehold.co/600x400/F59E0B/FFFFFF?text=Project+Gamma" alt="Project Gamma Screenshot" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-3 text-yellow-600" data-lang-key="project3Title">Project Gamma</h3>
+                        <p class="text-gray-600 mb-4 text-sm" data-lang-key="project3Desc">A mobile-first e-commerce platform with a focus on user experience and secure payments.</p>
+                         <div class="mb-4">
+                            <span class="inline-block bg-pink-100 text-pink-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techVue">Vue.js</span>
+                            <span class="inline-block bg-sky-100 text-sky-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techFirebase">Firebase</span>
+                            <span class="inline-block bg-teal-100 text-teal-700 text-xs font-semibold px-2.5 py-0.5 rounded-full" data-lang-key="techStripe">Stripe</span>
+                        </div>
+                        <div class="flex space-x-3">
+                           <a href="#" class="btn bg-yellow-500 hover:bg-yellow-600 text-white text-xs focus:ring-yellow-400" data-lang-key="btnDemo">Live Demo</a>
+                           <a href="#" class="btn btn-secondary text-xs" data-lang-key="btnSource">Source Code</a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 bg-gray-800 text-gray-200 fade-in-section">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-2 text-white" data-lang-key="contactTitle">Get In Touch</h2>
+            <div class="w-20 h-1 bg-blue-500 mx-auto mb-12"></div>
+            <p class="max-w-2xl mx-auto mb-8 text-gray-300" data-lang-key="contactIntro">I'm always excited to discuss new projects, creative ideas, or opportunities to collaborate. Feel free to reach out!</p>
+            <div class="space-y-4 md:space-y-0 md:space-x-6">
+                <a href="mailto:sattyphap@gmail.com" class="btn btn-primary" data-lang-key="contactEmailBtn">Email Me: sattyphap@gmail.com</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline border-gray-400 text-gray-300 hover:bg-gray-400 hover:text-gray-900" data-lang-key="contactLinkedIn">LinkedIn</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline border-gray-400 text-gray-300 hover:bg-gray-400 hover:text-gray-900" data-lang-key="contactGitHub">GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center">
+        <p class="text-sm" data-lang-key="footerText">&copy; 2024 Pheap setthi. All rights reserved. Designed with Passion.</p>
+    </footer>
+
+    <button id="scrollTopBtn" class="hidden fixed bottom-5 right-5 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-opacity duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+
+    <script>
+        // --- Configuration for Language Translations ---
+        const translations = {
+            en: {
+                logo: "Pheap setthi",
+                navAbout: "About",
+                navSkills: "Skills",
+                navProjects: "Projects",
+                navContact: "Contact",
+                navAboutMobile: "About",
+                navSkillsMobile: "Skills",
+                navProjectsMobile: "Projects",
+                navContactMobile: "Contact",
+                heroTitle: "Hello, I'm PHEAP setthi",
+                heroSubtitle: "A IT Developer Crafting Digital Solutions.",
+                heroCTA: "View My Work",
+                aboutTitle: "About Me",
+                aboutP1: "I am a dedicated and results-driven IT Developer with a strong foundation in web development, software engineering, and problem-solving. My journey in tech is fueled by a constant desire to learn, innovate, and create impactful digital experiences.",
+                aboutP2: "With expertise in modern frameworks and a keen eye for detail, I specialize in building responsive, user-friendly applications. I thrive in collaborative environments and am always eager to take on new challenges that push the boundaries of technology.",
+                skillsTitle: "My Skills",
+                skillJs: "Next.js",
+                skillJsDesc: "Frontend",
+                skillLa: "Laravel",
+                skillLaDesc: "backend",
+                skillPython: "Python",
+                skillPythonDesc: "Web Dev, Data Scraping",
+                skillDb: "Databases",
+                skillDbDesc: "SQL, NoSQL",
+                skillCloud: "Cloud Platforms",
+                skillCloudDesc: "AWS, Digital Ocean, Google Cloud",
+                projectsTitle: "My Projects",
+                project1Title: "Project Alpha",
+                project1Desc: "An innovative web application for task management and team collaboration, built with modern technologies.",
+                project2Title: "Project Beta",
+                project2Desc: "A data visualization dashboard that provides insights into market trends using Python and D3.js.",
+                project3Title: "Project Gamma",
+                project3Desc: "A mobile-first e-commerce platform with a focus on user experience and secure payments.",
+                techReact: "Next.js",
+                techNode: "Node.js",
+                techMongo: "Protgresql",
+                techPythonP: "Python",
+                techD3: "D3.js",
+                techFlask: "Flask",
+                techVue: "Vue.js",
+                techFirebase: "Firebase",
+                techStripe: "Stripe",
+                btnDemo: "Live Demo",
+                btnSource: "Source Code",
+                contactTitle: "Get In Touch",
+                contactIntro: "I'm always excited to discuss new projects, creative ideas, or opportunities to collaborate. Feel free to reach out!",
+                contactEmailBtn: "Email Me: sattyphap@gmail.com",
+                contactLinkedIn: "LinkedIn",
+                contactGitHub: "GitHub",
+                footerText: "&copy; 2024 Pheap setthi. All rights reserved. Designed with Passion."
+            },
+            
+            km: { // Khmer translations
+                logo: "ភាព សិទ្ធី",
+                navAbout: "អំពីខ្ញុំ",
+                navSkills: "ជំនាញ",
+                navProjects: "គម្រោង",
+                navContact: "ទំនាក់ទំនង",
+                navAboutMobile: "អំពីខ្ញុំ",
+                navSkillsMobile: "ជំនាញ",
+                navProjectsMobile: "គម្រោង",
+                navContactMobile: "ទំនាក់ទំនង",
+                heroTitle: "សួស្តី ខ្ញុំគឺ ភាព សិទ្ធី",
+                heroSubtitle: "អ្នកអភិវឌ្ឍន៍ IT ប្រកបដោយចំណង់ចំណូលចិត្ត បង្កើតដំណោះស្រាយឌីជីថល។",
+                heroCTA: "មើលការងាររបស់ខ្ញុំ",
+                aboutTitle: "អំពីខ្ញុំ",
+                aboutP1: "ខ្ញុំគឺជាអ្នកអភិវឌ្ឍន៍ IT ដែលយកចិត្តទុកដាក់ និងផ្តោតលើលទ្ធផល ជាមួយនឹងមូលដ្ឋានគ្រឹះដ៏រឹងមាំក្នុងការអភិវឌ្ឍន៍គេហទំព័រ វិស្វកម្មកម្មវិធី និងការដោះស្រាយបញ្ហា។ ការធ្វើដំណើររបស់ខ្ញុំក្នុងវិស័យបច្ចេកវិទ្យា គឺត្រូវបានជំរុញដោយបំណងប្រាថ្នាឥតឈប់ឈរក្នុងការរៀនសូត្រ បង្កើតថ្មី និងបង្កើតបទពិសោធន៍ឌីជីថលប្រកបដោយឥទ្ធិពល។",
+                aboutP2: "ជាមួយនឹងជំនាញនៅក្នុងក្របខ័ណ្ឌទំនើប និងការយកចិត្តទុកដាក់ខ្ពស់ចំពោះព័ត៌មានលម្អិត ខ្ញុំមានជំនាញក្នុងការបង្កើតកម្មវិធីដែលឆ្លើយតប និងងាយស្រួលប្រើ។ ខ្ញុំរីកចម្រើននៅក្នុងបរិយាកាសសហការ ហើយតែងតែមានបំណងចង់ទទួលយកបញ្ហាប្រឈមថ្មីៗដែលជំរុញព្រំដែននៃបច្ចេកវិទ្យា។",
+                skillsTitle: "ជំនាញរបស់ខ្ញុំ",
+                skillJs: "JavaScript",
+                skillJsDesc: "តក្កវិទ្យា Frontend និង Backend",
+                skillPython: "Python",
+                skillPythonDesc: "អភិវឌ្ឍន៍គេហទំព័រ, វិទ្យាសាស្ត្រទិន្នន័យ",
+                skillDb: "មូលដ្ឋានទិន្នន័យ",
+                skillDbDesc: "SQL, NoSQL",
+                skillCloud: "វេទិកាលើពពក",
+                skillCloudDesc: "AWS, Azure, GCP",
+                projectsTitle: "គម្រោងរបស់ខ្ញុំ",
+                project1Title: "គម្រោង អាល់ហ្វា",
+                project1Desc: "កម្មវិធីគេហទំព័រប្រកបដោយភាពច្នៃប្រឌិតសម្រាប់ការគ្រប់គ្រងការងារ និងការសហការជាក្រុម បង្កើតឡើងដោយបច្ចេកវិទ្យាទំនើប។",
+                project2Title: "គម្រោង បេតា",
+                project2Desc: "ផ្ទាំងគ្រប់គ្រងការមើលឃើញទិន្នន័យដែលផ្តល់នូវការយល់ដឹងអំពីនិន្នាការទីផ្សារដោយប្រើ Python និង D3.js ។",
+                project3Title: "គម្រោង ហ្គាម៉ា",
+                project3Desc: "វេទិកាពាណិជ្ជកម្មអេឡិចត្រូនិចចល័តដំបូងគេ ដោយផ្តោតលើបទពិសោធន៍អ្នកប្រើប្រាស់ និងការទូទាត់ប្រកបដោយសុវត្ថិភាព។",
+                techReact: "React",
+                techNode: "Node.js",
+                techMongo: "MongoDB",
+                techPythonP: "Python",
+                techD3: "D3.js",
+                techFlask: "Flask",
+                techVue: "Vue.js",
+                techFirebase: "Firebase",
+                techStripe: "Stripe",
+                btnDemo: "សាកល្បងផ្ទាល់",
+                btnSource: "កូដប្រភព",
+                contactTitle: "ទំនាក់ទំនងមកខ្ញុំ",
+                contactIntro: "ខ្ញុំតែងតែរំភើបក្នុងការពិភាក្សាអំពីគម្រោងថ្មីៗ គំនិតច្នៃប្រឌិត ឬឱកាសសហការ។ សូមកុំស្ទាក់ស្ទើរក្នុងការទាក់ទងមក!",
+                contactEmailBtn: "អ៊ីមែលមកខ្ញុំ៖ sattyphap@gmail.com",
+                contactLinkedIn: "LinkedIn",
+                contactGitHub: "GitHub",
+                footerText: "&copy; ២០២៤ ចន ដូ. រក្សាសិទ្ធិគ្រប់យ៉ាង។ រចនាឡើងដោយក្តីស្រឡាញ់។"
+            }
+        };
+
+        let currentLang = 'en'; // Default language
+
+        // --- DOM Elements ---
+        const menuButton = document.getElementById('menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const langEnBtn = document.getElementById('lang-en');
+        const langEsBtn = document.getElementById('lang-es');
+        const langKmBtn = document.getElementById('lang-km'); // Khmer desktop button
+        const langEnMobileBtn = document.getElementById('lang-en-mobile');
+        const langEsMobileBtn = document.getElementById('lang-es-mobile');
+        const langKmMobileBtn = document.getElementById('lang-km-mobile'); // Khmer mobile button
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // --- Functions ---
+
+        // Function to update text content based on selected language
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang; // Update lang attribute of HTML tag
+            const elementsToTranslate = document.querySelectorAll('[data-lang-key]');
+            elementsToTranslate.forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // Update active state for language buttons
+            [langEnBtn, langEsBtn, langKmBtn, langEnMobileBtn, langEsMobileBtn, langKmMobileBtn].forEach(btn => {
+                if (btn) btn.classList.remove('active')
+            });
+
+            if (lang === 'en') {
+                if (langEnBtn) langEnBtn.classList.add('active');
+                if (langEnMobileBtn) langEnMobileBtn.classList.add('active');
+            } else if (lang === 'es') {
+                if (langEsBtn) langEsBtn.classList.add('active');
+                if (langEsMobileBtn) langEsMobileBtn.classList.add('active');
+            } else if (lang === 'km') {
+                if (langKmBtn) langKmBtn.classList.add('active');
+                if (langKmMobileBtn) langKmMobileBtn.classList.add('active');
+            }
+        }
+        
+        // Function for mobile menu toggle
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+            menuButton.classList.toggle('open');
+        }
+
+        // Function for scroll-to-top button visibility
+        function handleScrollTopButton() {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.remove('hidden');
+                scrollTopBtn.classList.add('opacity-100');
+            } else {
+                scrollTopBtn.classList.add('hidden');
+                scrollTopBtn.classList.remove('opacity-100');
+            }
+        }
+        
+        // Function to scroll to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Function for fade-in sections on scroll
+        function handleFadeInSections() {
+            const sections = document.querySelectorAll('.fade-in-section');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.1 }); 
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        // Function to update active navigation link based on scroll position
+        function updateActiveNavLink() {
+            let currentSectionId = '';
+            const sections = document.querySelectorAll('section[id]'); 
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100; 
+                if (window.scrollY >= sectionTop) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('nav-link-active');
+                if (link.getAttribute('href') === `#${currentSectionId}`) {
+                    link.classList.add('nav-link-active');
+                }
+            });
+        }
+
+
+        // --- Event Listeners ---
+        if (menuButton && mobileMenu) {
+            menuButton.addEventListener('click', toggleMobileMenu);
+        }
+        
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    toggleMobileMenu();
+                }
+            });
+        });
+
+        if (langEnBtn) langEnBtn.addEventListener('click', () => setLanguage('en'));
+        if (langKmBtn) langKmBtn.addEventListener('click', () => setLanguage('km')); // Listener for Khmer desktop
+
+        if (langEnMobileBtn) langEnMobileBtn.addEventListener('click', () => setLanguage('en'));
+        if (langKmMobileBtn) langKmMobileBtn.addEventListener('click', () => setLanguage('km')); // Listener for Khmer mobile
+
+
+        if (scrollTopBtn) {
+            window.addEventListener('scroll', handleScrollTopButton);
+            scrollTopBtn.addEventListener('click', scrollToTop);
+        }
+        
+        document.addEventListener('click', function (event) {
+            if (event.target.matches('a[href^="#"]')) {
+                event.preventDefault();
+                const targetId = event.target.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerOffset = document.querySelector('header').offsetHeight || 70;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        
+                    window.scrollTo({
+                         top: offsetPosition,
+                         behavior: "smooth"
+                    });
+                }
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            handleScrollTopButton();
+            updateActiveNavLink();
+        });
+        
+        // --- Initializations ---
+        document.addEventListener('DOMContentLoaded', () => {
+            setLanguage(currentLang); 
+            handleFadeInSections();   
+            updateActiveNavLink();    
+            
+            const heroTitle = document.querySelector('#hero h1');
+            const heroSubtitle = document.querySelector('#hero p');
+            const heroCTA = document.querySelector('#hero a');
+            const heroImage = document.querySelector('.hero-profile-img');
+
+
+            if(heroImage) heroImage.classList.add('animate-[fade-in-down_1s_ease-out]'); // Added animation for image
+            if(heroTitle) heroTitle.classList.add('animate-[fade-in-down_1s_ease-out_0.2s]'); // Slight delay for title
+            if(heroSubtitle) heroSubtitle.classList.add('animate-[fade-in-up_1s_ease-out_0.7s]'); // Adjusted delay for subtitle
+            if(heroCTA) heroCTA.classList.add('animate-[bounce-slow_2s_infinite_1.2s]'); // Adjusted delay for CTA
+
+            const styleSheet = document.createElement("style");
+            styleSheet.type = "text/css";
+            styleSheet.innerText = `
+                @keyframes fade-in-down { 0% { opacity: 0; transform: translateY(-20px); } 100% { opacity: 1; transform: translateY(0); } }
+                .animate-fade-in-down { animation: fade-in-down 0.8s ease-out forwards; }
+
+                @keyframes fade-in-up { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+                .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; } 
+                
+                @keyframes bounce-slow {
+                    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+                    40% {transform: translateY(-10px);}
+                    60% {transform: translateY(-5px);}
+                }
+                .animate-bounce-slow { animation: bounce-slow 2s infinite; } /* Removed fixed animation-delay from class, apply in JS */
+            `;
+            document.head.appendChild(styleSheet);
+        });
+
+    </script>
+</body>
+</html>
