@@ -5,111 +5,473 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pheap setthi- IT Developer Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Kantumruy+Pro:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
         /* Custom global styles */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-gradient: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-light: 0 8px 32px rgba(31, 38, 135, 0.37);
+            --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Inter', 'Kantumruy Pro', sans-serif; /* Added Kantumruy Pro for Khmer */
-            background-color: #f0f4f8; /* Light gray-blue background */
-            color: #1e293b; /* Dark slate text */
+            font-family: 'Poppins', 'Inter', 'Kantumruy Pro', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: #1e293b;
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
-        /* Apply Khmer font specifically to elements with Khmer text if needed,
-           or rely on browser font fallback. For better control: */
+        /* Apply Khmer font specifically to elements with Khmer text */
         [lang="km"] body, [lang="km"] [data-lang-key] {
-            font-family: 'Kantumruy Pro', 'Inter', sans-serif;
+            font-family: 'Kantumruy Pro', 'Poppins', 'Inter', sans-serif;
         }
 
-
-        /* Animation for elements fading in on scroll */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
         }
 
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
-        /* Custom scrollbar (optional, for aesthetics) */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Glass morphism effect */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Enhanced scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 12px;
         }
         ::-webkit-scrollbar-track {
-            background: #e2e8f0; /* Lighter slate */
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #3b82f6; /* Blue-500 */
-            border-radius: 4px;
+            background: var(--accent-gradient);
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: content-box;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #2563eb; /* Blue-600 */
+            background: var(--secondary-gradient);
+            background-clip: content-box;
         }
 
-        /* Styling for active navigation link */
+        /* Navigation enhancements */
         .nav-link-active {
-            color: #3b82f6; /* Blue-500 */
+            color: #3b82f6;
             font-weight: 600;
+            position: relative;
         }
-        
+
+        .nav-link-active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+        }
+
         /* Enhanced button styles */
         .btn {
-            @apply inline-block px-6 py-3 text-sm font-semibold rounded-lg shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-opacity-50;
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
         .btn-primary {
-            @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500;
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-light);
         }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
         .btn-secondary {
-            @apply bg-gray-700 text-white hover:bg-gray-800 focus:ring-gray-600;
+            background: var(--dark-gradient);
+            color: white;
         }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(44, 62, 80, 0.4);
+        }
+
         .btn-outline {
-            @apply bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-500;
+            background: transparent;
+            border: 2px solid;
+            border-image: var(--accent-gradient) 1;
+            color: #3b82f6;
+            position: relative;
         }
 
-        /* Project card hover effect */
+        .btn-outline:hover {
+            background: var(--accent-gradient);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Enhanced project card effects */
+        .project-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
         .project-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-        
-        /* Language switcher style */
-        .lang-switcher button {
-            @apply px-3 py-1 text-sm rounded-md transition-colors duration-200;
-        }
-        .lang-switcher button.active {
-            @apply bg-blue-600 text-white;
-        }
-        .lang-switcher button:not(.active) {
-            @apply bg-gray-200 text-gray-700 hover:bg-gray-300;
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
-        /* Mobile menu icon lines */
-        #menu-button span {
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        .project-card:hover::before {
+            opacity: 0.1;
         }
+
+        /* Enhanced language switcher */
+        .lang-switcher button {
+            padding: 8px 16px;
+            font-size: 12px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .lang-switcher button.active {
+            background: var(--accent-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .lang-switcher button:not(.active) {
+            background: rgba(255, 255, 255, 0.2);
+            color: #374151;
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-switcher button:not(.active):hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Enhanced mobile menu animation */
+        #menu-button {
+            position: relative;
+            z-index: 1000;
+        }
+
+        #menu-button span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: currentColor;
+            margin: 5px 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-radius: 2px;
+        }
+
         #menu-button.open span:nth-child(1) {
             transform: translateY(8px) rotate(45deg);
         }
         #menu-button.open span:nth-child(2) {
             opacity: 0;
+            transform: translateX(-20px);
         }
         #menu-button.open span:nth-child(3) {
             transform: translateY(-8px) rotate(-45deg);
         }
 
-        /* Profile image styling in Hero */
+        /* Enhanced profile image */
         .hero-profile-img {
-            @apply w-48 h-48 md:w-64 md:h-64 rounded-full object-cover border-4 border-white shadow-xl mx-auto;
+            width: 280px;
+            height: 280px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            margin: 0 auto;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .hero-profile-img:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .hero-profile-img {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        /* Skill card enhancements */
+        .skill-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-card:hover::before {
+            opacity: 0.1;
+        }
+
+        /* Floating elements */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        .floating:nth-child(odd) {
+            animation-delay: -1s;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Parallax background elements */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .bg-decoration:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bg-decoration:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            right: 10%;
+            animation-delay: -2s;
+        }
+
+        .bg-decoration:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+
+        /* Section backgrounds */
+        .section-bg-1 {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-bg-2 {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.05) 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Enhanced scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 1000;
+        }
+
+        .scroll-progress {
+            height: 100%;
+            background: var(--accent-gradient);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* Typewriter effect */
+        .typewriter {
+            overflow: hidden;
+            border-right: 3px solid rgba(255, 255, 255, 0.75);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: rgba(255, 255, 255, 0.75); }
+        }
+
+        /* Contact form enhancements */
+        .contact-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .form-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(79, 172, 254, 0.5);
+            box-shadow: 0 0 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
         }
 
     </style>
 </head>
 <body class="antialiased">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="text-center">
+            <div class="loading-spinner mx-auto mb-4"></div>
+            <h2 class="text-white text-xl font-semibold">Loading Portfolio...</h2>
+        </div>
+    </div>
 
-    <header class="bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50">
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator">
+        <div id="scroll-progress" class="scroll-progress"></div>
+    </div>
+
+    <header class="glass fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors duration-300" data-lang-key="logo">Pheap setthi</a>
             
@@ -127,7 +489,6 @@
             <div class="md:hidden flex items-center">
                  <div class="lang-switcher flex space-x-1 mr-3">
                     <button id="lang-en-mobile" class="active">EN</button>
-                    <button id="lang-es-mobile">ES</button>
                     <button id="lang-km-mobile">KM</button>
                 </div>
                 <button id="menu-button" class="text-gray-700 focus:outline-none">
@@ -145,178 +506,536 @@
         </div>
     </header>
 
-    <section id="hero" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-700 text-white pt-24 pb-12 md:pt-20 fade-in-section">
-        <div class="container mx-auto px-6">
+    <section id="hero" class="min-h-screen flex items-center justify-center relative overflow-hidden text-white pt-24 pb-12 md:pt-20">
+        <!-- Animated Background Elements -->
+        <div class="bg-decoration"></div>
+        <div class="bg-decoration"></div>
+        <div class="bg-decoration"></div>
+
+        <!-- Particles Background -->
+        <div id="particles-js" class="absolute inset-0"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
             <div class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 md:gap-12">
-                <div class="w-full md:w-1/3 flex justify-center order-1 md:order-2 animate-fade-in-down">
-                    <img src="setthi2.png" alt="Your Name - Profile Picture" class="hero-profile-img" style="border-radius: 10%;">
+                <div class="w-full md:w-1/3 flex justify-center order-1 md:order-2" data-aos="fade-left" data-aos-delay="300">
+                    <div class="relative">
+                        <img src="setthi2.png" alt="Pheap setthi - Profile Picture" class="hero-profile-img floating">
+                        <!-- Glowing ring effect -->
+                        <div class="absolute inset-0 rounded-full border-2 border-white opacity-20 animate-ping"></div>
+                    </div>
                 </div>
                 <div class="w-full md:w-2/3 text-center md:text-left order-2 md:order-1">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 animate-fade-in-down" data-lang-key="heroTitle">Hello, I'm Pheap setthi</h1>
-                    <p class="text-lg md:text-xl lg:text-2xl mb-8 animate-fade-in-up" data-lang-key="heroSubtitle">A Passionate IT Developer Crafting Digital Solutions.</p>
-                    <a href="#projects" class="btn btn-outline border-white text-white hover:bg-white hover:text-blue-700 animate-bounce-slow" data-lang-key="heroCTA">View My Work</a>
+                    <div class="mb-4" data-aos="fade-right" data-aos-delay="100">
+                        <span class="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium mb-4">
+                            <i class="fas fa-code mr-2"></i>Welcome to my portfolio
+                        </span>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 typewriter" data-aos="fade-right" data-aos-delay="200" data-lang-key="heroTitle">Hello, I'm Pheap setthi</h1>
+                    <p class="text-lg md:text-xl lg:text-2xl mb-8 opacity-90" data-aos="fade-right" data-aos-delay="400" data-lang-key="heroSubtitle">A Passionate IT Developer Crafting Digital Solutions.</p>
+
+                    <!-- Social Links -->
+                    <div class="flex justify-center md:justify-start space-x-4 mb-8" data-aos="fade-right" data-aos-delay="500">
+                        <a href="https://github.com/setthi-pheap11" class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 hover:scale-110">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 hover:scale-110">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="mailto:sattyphap@gmail.com" class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 hover:scale-110">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </a>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start" data-aos="fade-right" data-aos-delay="600">
+                        <a href="#projects" class="btn btn-primary" data-lang-key="heroCTA">
+                            <i class="fas fa-eye mr-2"></i>View My Work
+                        </a>
+                        <a href="#contact" class="btn btn-outline border-white text-white hover:bg-white hover:text-blue-700">
+                            <i class="fas fa-paper-plane mr-2"></i>Get In Touch
+                        </a>
+                    </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
             </div>
         </div>
     </section>
 
-    <section id="about" class="py-20 bg-white fade-in-section">
+    <section id="about" class="py-20 section-bg-1 relative">
         <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-2 text-gray-800" data-lang-key="aboutTitle">About Me</h2>
-            <div class="w-20 h-1 bg-blue-600 mx-auto mb-12"></div>
-            <div class="max-w-3xl mx-auto text-center text-gray-600 space-y-6">
-                <p data-lang-key="aboutP1">I am a dedicated and results-driven IT Developer with a strong foundation in web development, software engineering, and problem-solving. My journey in tech is fueled by a constant desire to learn, innovate, and create impactful digital experiences.</p>
-                <p data-lang-key="aboutP2">With expertise in modern frameworks and a keen eye for detail, I specialize in building responsive, user-friendly applications. I thrive in collaborative environments and am always eager to take on new challenges that push the boundaries of technology.</p>
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white" data-lang-key="aboutTitle">About Me</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto mb-6 rounded-full"></div>
+                <p class="text-xl text-white/80 max-w-2xl mx-auto">Passionate developer crafting digital experiences</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- About Content -->
+                <div class="space-y-6" data-aos="fade-right">
+                    <div class="glass p-8 rounded-2xl">
+                        <p class="text-white/90 text-lg leading-relaxed mb-6" data-lang-key="aboutP1">I am a dedicated and results-driven IT Developer with a strong foundation in web development, software engineering, and problem-solving. My journey in tech is fueled by a constant desire to learn, innovate, and create impactful digital experiences.</p>
+                        <p class="text-white/90 text-lg leading-relaxed" data-lang-key="aboutP2">With expertise in modern frameworks and a keen eye for detail, I specialize in building responsive, user-friendly applications. I thrive in collaborative environments and am always eager to take on new challenges that push the boundaries of technology.</p>
+                    </div>
+                </div>
+
+                <!-- Stats & Achievements -->
+                <div class="space-y-6" data-aos="fade-left">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass p-6 rounded-2xl text-center">
+                            <div class="text-3xl font-bold text-white mb-2">3+</div>
+                            <div class="text-white/70">Years Experience</div>
+                        </div>
+                        <div class="glass p-6 rounded-2xl text-center">
+                            <div class="text-3xl font-bold text-white mb-2">50+</div>
+                            <div class="text-white/70">Projects Completed</div>
+                        </div>
+                        <div class="glass p-6 rounded-2xl text-center">
+                            <div class="text-3xl font-bold text-white mb-2">10+</div>
+                            <div class="text-white/70">Technologies</div>
+                        </div>
+                        <div class="glass p-6 rounded-2xl text-center">
+                            <div class="text-3xl font-bold text-white mb-2">100%</div>
+                            <div class="text-white/70">Client Satisfaction</div>
+                        </div>
+                    </div>
+
+                    <!-- Download CV Button -->
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary inline-flex items-center">
+                            <i class="fas fa-download mr-2"></i>
+                            Download CV
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="skills" class="py-20 bg-gray-50 fade-in-section">
-    <div class="container mx-auto px-6">
-        <h2 class="text-3xl font-bold text-center mb-2 text-gray-800" data-lang-key="skillsTitle">My Skills</h2>
-        <div class="w-20 h-1 bg-blue-600 mx-auto mb-12"></div>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <img src="https://cdn.worldvectorlogo.com/logos/laravel-2.svg" alt="Laravel" class="w-16 h-16 mx-auto mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-gray-700">Laravel</h3>
-                <p class="text-gray-500 text-sm">Backend</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <img src="https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" alt="Node.js" class="w-16 h-16 mx-auto mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-gray-700">Node.js</h3>
-                <p class="text-gray-500 text-sm">Backend</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <img src="https://cdn.worldvectorlogo.com/logos/next-js.svg" alt="Next.js" class="w-16 h-16 mx-auto mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-gray-700">Next.js</h3>
-                <p class="text-gray-500 text-sm">Frontend</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <img src="https://cdn.worldvectorlogo.com/logos/html-1.svg" alt="HTML5" class="w-16 h-16 mx-auto mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-gray-700">HTML5</h3>
-                <p class="text-gray-500 text-sm">Structure</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <img src="https://cdn.worldvectorlogo.com/logos/css-3.svg" alt="CSS3" class="w-16 h-16 mx-auto mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-gray-700">CSS3</h3>
-                <p class="text-gray-500 text-sm">Styling</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <img src="https://cdn.worldvectorlogo.com/logos/logo-javascript.svg" alt="JavaScript" class="w-16 h-16 mx-auto mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-gray-700">JavaScript</h3>
-                <p class="text-gray-500 text-sm">Logic</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <img src="https://cdn.worldvectorlogo.com/logos/figma-1.svg" alt="Figma" class="w-16 h-16 mx-auto mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-gray-700">UX/UI (Figma)</h3>
-                <p class="text-gray-500 text-sm">Design</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <img src="https://cdn.worldvectorlogo.com/logos/aws-2.svg" alt="AWS" class="w-16 h-16 mx-auto mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-gray-700">AWS</h3>
-                <p class="text-gray-500 text-sm">Cloud</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <img src="https://cdn.worldvectorlogo.com/logos/digital-ocean-icon.svg" alt="Digital Ocean" class="w-16 h-16 mx-auto mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-gray-700">Digital Ocean</h3>
-                <p class="text-gray-500 text-sm">Cloud</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <img src="https://cdn.worldvectorlogo.com/logos/google-cloud-1.svg" alt="Google Cloud" class="w-16 h-16 mx-auto mb-4">
-                <h3 class="text-xl font-semibold mb-2 text-gray-700">Google Cloud</h3>
-                <p class="text-gray-500 text-sm">Cloud</p>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-    <section id="projects" class="py-20 bg-white fade-in-section">
+    <section id="skills" class="py-20 section-bg-2 relative">
         <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-2 text-gray-800" data-lang-key="projectsTitle">My Projects</h2>
-            <div class="w-20 h-1 bg-blue-600 mx-auto mb-12"></div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden project-card transition-all duration-300 ease-in-out">
-                    <img src="https://placehold.co/600x400/3B82F6/FFFFFF?text=Project+Alpha" alt="Project Alpha Screenshot" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-3 text-blue-700" data-lang-key="project1Title">Project Alpha</h3>
-                        <p class="text-gray-600 mb-4 text-sm" data-lang-key="project1Desc">An innovative web application for task management and team collaboration, built with modern technologies.</p>
-                        <div class="mb-4">
-                            <span class="inline-block bg-blue-100 text-blue-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techReact">next.js</span>
-                            <span class="inline-block bg-green-100 text-green-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techNode">Node.js</span>
-                            <span class="inline-block bg-yellow-100 text-yellow-700 text-xs font-semibold px-2.5 py-0.5 rounded-full" data-lang-key="techMongo">Postgresql</span>
-                        </div>
-                        <div class="flex space-x-3">
-                            <a href="https://food-delivery-frontend-bice.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-xs" data-lang-key="btnDemo">Live Demo</a>
-                            <a href="#" class="btn btn-secondary text-xs" data-lang-key="btnSource">Source Code</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden project-card transition-all duration-300 ease-in-out">
-                    <img src="https://placehold.co/600x400/10B981/FFFFFF?text=Project+Beta" alt="Project Beta Screenshot" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-3 text-green-700" data-lang-key="project2Title">Project Beta</h3>
-                        <p class="text-gray-600 mb-4 text-sm" data-lang-key="project2Desc">A data visualization dashboard that provides insights into market trends using Python and D3.js.</p>
-                         <div class="mb-4">
-                            <span class="inline-block bg-purple-100 text-purple-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techPythonP">Python</span>
-                            <span class="inline-block bg-red-100 text-red-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techD3">D3.js</span>
-                            <span class="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-2.5 py-0.5 rounded-full" data-lang-key="techFlask">Flask</span>
-                        </div>
-                        <div class="flex space-x-3">
-                            <a href="#" class="btn bg-green-600 hover:bg-green-700 text-white text-xs focus:ring-green-500" data-lang-key="btnDemo">Live Demo</a>
-                            <a href="#" class="btn btn-secondary text-xs" data-lang-key="btnSource">Source Code</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-50 rounded-xl shadow-lg overflow-hidden project-card transition-all duration-300 ease-in-out">
-                     <img src="https://placehold.co/600x400/F59E0B/FFFFFF?text=Project+Gamma" alt="Project Gamma Screenshot" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-3 text-yellow-600" data-lang-key="project3Title">Project Gamma</h3>
-                        <p class="text-gray-600 mb-4 text-sm" data-lang-key="project3Desc">A mobile-first e-commerce platform with a focus on user experience and secure payments.</p>
-                         <div class="mb-4">
-                            <span class="inline-block bg-pink-100 text-pink-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techVue">Vue.js</span>
-                            <span class="inline-block bg-sky-100 text-sky-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full" data-lang-key="techFirebase">Firebase</span>
-                            <span class="inline-block bg-teal-100 text-teal-700 text-xs font-semibold px-2.5 py-0.5 rounded-full" data-lang-key="techStripe">Stripe</span>
-                        </div>
-                        <div class="flex space-x-3">
-                           <a href="#" class="btn bg-yellow-500 hover:bg-yellow-600 text-white text-xs focus:ring-yellow-400" data-lang-key="btnDemo">Live Demo</a>
-                           <a href="#" class="btn btn-secondary text-xs" data-lang-key="btnSource">Source Code</a>
-                        </div>
-                    </div>
-                </div>
-                </div>
-        </div>
-    </section>
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white" data-lang-key="skillsTitle">My Skills</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-purple-400 to-pink-500 mx-auto mb-6 rounded-full"></div>
+                <p class="text-xl text-white/80 max-w-2xl mx-auto">Technologies and tools I work with</p>
+            </div>
 
-    <section id="contact" class="py-20 bg-gray-800 text-gray-200 fade-in-section">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-2 text-white" data-lang-key="contactTitle">Get In Touch</h2>
-            <div class="w-20 h-1 bg-blue-500 mx-auto mb-12"></div>
-            <p class="max-w-2xl mx-auto mb-8 text-gray-300" data-lang-key="contactIntro">I'm always excited to discuss new projects, creative ideas, or opportunities to collaborate. Feel free to reach out!</p>
-            <div class="space-y-4 md:space-y-0 md:space-x-6">
-                <a href="mailto:sattyphap@gmail.com" class="btn btn-primary" data-lang-key="contactEmailBtn">Email Me: sattyphap@gmail.com</a>
-                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline border-gray-400 text-gray-300 hover:bg-gray-400 hover:text-gray-900" data-lang-key="contactLinkedIn">LinkedIn</a>
-                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline border-gray-400 text-gray-300 hover:bg-gray-400 hover:text-gray-900" data-lang-key="contactGitHub">GitHub</a>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="skill-card p-6 text-center group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 mx-auto mb-4 p-3 bg-white/10 rounded-2xl group-hover:bg-white/20 transition-all duration-300">
+                        <img src="https://cdn.worldvectorlogo.com/logos/laravel-2.svg" alt="Laravel" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-white">Laravel</h3>
+                    <p class="text-white/70 text-sm">Backend Framework</p>
+                    <div class="mt-3 bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-red-400 to-red-600 h-full rounded-full" style="width: 90%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-card p-6 text-center group" data-aos="fade-up" data-aos-delay="150">
+                    <div class="w-16 h-16 mx-auto mb-4 p-3 bg-white/10 rounded-2xl group-hover:bg-white/20 transition-all duration-300">
+                        <img src="https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" alt="Node.js" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-white">Node.js</h3>
+                    <p class="text-white/70 text-sm">Backend Runtime</p>
+                    <div class="mt-3 bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-green-400 to-green-600 h-full rounded-full" style="width: 85%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-card p-6 text-center group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 mx-auto mb-4 p-3 bg-white/10 rounded-2xl group-hover:bg-white/20 transition-all duration-300">
+                        <img src="https://cdn.worldvectorlogo.com/logos/next-js.svg" alt="Next.js" class="w-full h-full object-contain filter invert">
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-white">Next.js</h3>
+                    <p class="text-white/70 text-sm">React Framework</p>
+                    <div class="mt-3 bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-gray-400 to-gray-600 h-full rounded-full" style="width: 88%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-card p-6 text-center group" data-aos="fade-up" data-aos-delay="250">
+                    <div class="w-16 h-16 mx-auto mb-4 p-3 bg-white/10 rounded-2xl group-hover:bg-white/20 transition-all duration-300">
+                        <img src="https://cdn.worldvectorlogo.com/logos/html-1.svg" alt="HTML5" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-white">HTML5</h3>
+                    <p class="text-white/70 text-sm">Markup Language</p>
+                    <div class="mt-3 bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-orange-400 to-orange-600 h-full rounded-full" style="width: 95%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-card p-6 text-center group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 mx-auto mb-4 p-3 bg-white/10 rounded-2xl group-hover:bg-white/20 transition-all duration-300">
+                        <img src="https://cdn.worldvectorlogo.com/logos/css-3.svg" alt="CSS3" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-white">CSS3</h3>
+                    <p class="text-white/70 text-sm">Styling Language</p>
+                    <div class="mt-3 bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-full rounded-full" style="width: 92%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-card p-6 text-center group" data-aos="fade-up" data-aos-delay="350">
+                    <div class="w-16 h-16 mx-auto mb-4 p-3 bg-white/10 rounded-2xl group-hover:bg-white/20 transition-all duration-300">
+                        <img src="https://cdn.worldvectorlogo.com/logos/logo-javascript.svg" alt="JavaScript" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-white">JavaScript</h3>
+                    <p class="text-white/70 text-sm">Programming Language</p>
+                    <div class="mt-3 bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-yellow-400 to-yellow-600 h-full rounded-full" style="width: 90%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-card p-6 text-center group" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-16 h-16 mx-auto mb-4 p-3 bg-white/10 rounded-2xl group-hover:bg-white/20 transition-all duration-300">
+                        <img src="pngwing.com.png" alt="Figma" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-white">Figma</h3>
+                    <p class="text-white/70 text-sm">UI/UX Design</p>
+                    <div class="mt-3 bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-purple-400 to-purple-600 h-full rounded-full" style="width: 85%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-card p-6 text-center group" data-aos="fade-up" data-aos-delay="450">
+                    <div class="w-16 h-16 mx-auto mb-4 p-3 bg-white/10 rounded-2xl group-hover:bg-white/20 transition-all duration-300">
+                        <img src="https://cdn.worldvectorlogo.com/logos/aws-2.svg" alt="AWS" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 text-white">AWS</h3>
+                    <p class="text-white/70 text-sm">Cloud Platform</p>
+                    <div class="mt-3 bg-white/20 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-orange-400 to-orange-600 h-full rounded-full" style="width: 80%"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center">
-        <p class="text-sm" data-lang-key="footerText">&copy; 2024 Pheap setthi. All rights reserved. Designed with Passion.</p>
+    <section id="projects" class="py-20 section-bg-1 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white" data-lang-key="projectsTitle">My Projects</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-green-400 to-blue-500 mx-auto mb-6 rounded-full"></div>
+                <p class="text-xl text-white/80 max-w-2xl mx-auto">Showcasing my latest work and achievements</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card overflow-hidden group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative overflow-hidden">
+                        <img src="https://placehold.co/600x400/3B82F6/FFFFFF?text=Food+Delivery+App" alt="Food Delivery App Screenshot" class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-semibold">Featured</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 text-white group-hover:text-blue-300 transition-colors" data-lang-key="project1Title">Food Delivery App</h3>
+                        <p class="text-white/80 mb-4 text-sm leading-relaxed" data-lang-key="project1Desc">A modern food delivery platform with real-time tracking, secure payments, and intuitive user interface.</p>
+                        <div class="mb-6 flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs font-medium rounded-full border border-blue-500/30" data-lang-key="techReact">Next.js</span>
+                            <span class="px-3 py-1 bg-green-500/20 text-green-300 text-xs font-medium rounded-full border border-green-500/30" data-lang-key="techNode">Node.js</span>
+                            <span class="px-3 py-1 bg-purple-500/20 text-purple-300 text-xs font-medium rounded-full border border-purple-500/30" data-lang-key="techMongo">PostgreSQL</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="https://food-delivery-frontend-bice.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-xs flex-1 text-center" data-lang-key="btnDemo">
+                                <i class="fas fa-external-link-alt mr-1"></i>Live Demo
+                            </a>
+                            <a href="https://github.com/setthi-pheap11" class="btn btn-secondary text-xs flex-1 text-center" data-lang-key="btnSource">
+                                <i class="fab fa-github mr-1"></i>Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card overflow-hidden group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative overflow-hidden">
+                        <img src="https://placehold.co/600x400/10B981/FFFFFF?text=Analytics+Dashboard" alt="Analytics Dashboard Screenshot" class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold">Popular</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 text-white group-hover:text-green-300 transition-colors" data-lang-key="project2Title">Analytics Dashboard</h3>
+                        <p class="text-white/80 mb-4 text-sm leading-relaxed" data-lang-key="project2Desc">A comprehensive data visualization dashboard providing real-time insights and interactive charts.</p>
+                        <div class="mb-6 flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-purple-500/20 text-purple-300 text-xs font-medium rounded-full border border-purple-500/30" data-lang-key="techPythonP">Python</span>
+                            <span class="px-3 py-1 bg-red-500/20 text-red-300 text-xs font-medium rounded-full border border-red-500/30" data-lang-key="techD3">D3.js</span>
+                            <span class="px-3 py-1 bg-indigo-500/20 text-indigo-300 text-xs font-medium rounded-full border border-indigo-500/30" data-lang-key="techFlask">Flask</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="#" class="btn btn-primary text-xs flex-1 text-center" data-lang-key="btnDemo">
+                                <i class="fas fa-external-link-alt mr-1"></i>Live Demo
+                            </a>
+                            <a href="https://github.com/setthi-pheap11" class="btn btn-secondary text-xs flex-1 text-center" data-lang-key="btnSource">
+                                <i class="fab fa-github mr-1"></i>Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card overflow-hidden group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="relative overflow-hidden">
+                        <img src="https://placehold.co/600x400/F59E0B/FFFFFF?text=E-Commerce+Platform" alt="E-Commerce Platform Screenshot" class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-semibold">New</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 text-white group-hover:text-yellow-300 transition-colors" data-lang-key="project3Title">E-Commerce Platform</h3>
+                        <p class="text-white/80 mb-4 text-sm leading-relaxed" data-lang-key="project3Desc">A full-featured e-commerce solution with advanced search, secure payments, and mobile optimization.</p>
+                        <div class="mb-6 flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-pink-500/20 text-pink-300 text-xs font-medium rounded-full border border-pink-500/30" data-lang-key="techVue">Vue.js</span>
+                            <span class="px-3 py-1 bg-sky-500/20 text-sky-300 text-xs font-medium rounded-full border border-sky-500/30" data-lang-key="techFirebase">Firebase</span>
+                            <span class="px-3 py-1 bg-teal-500/20 text-teal-300 text-xs font-medium rounded-full border border-teal-500/30" data-lang-key="techStripe">Stripe</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="#" class="btn btn-primary text-xs flex-1 text-center" data-lang-key="btnDemo">
+                                <i class="fas fa-external-link-alt mr-1"></i>Live Demo
+                            </a>
+                            <a href="https://github.com/setthi-pheap11" class="btn btn-secondary text-xs flex-1 text-center" data-lang-key="btnSource">
+                                <i class="fab fa-github mr-1"></i>Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View All Projects Button -->
+            <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
+                <a href="#" class="btn btn-outline border-white text-white hover:bg-white hover:text-blue-700">
+                    <i class="fas fa-folder-open mr-2"></i>View All Projects
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 section-bg-2 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white" data-lang-key="contactTitle">Get In Touch</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-pink-400 to-red-500 mx-auto mb-6 rounded-full"></div>
+                <p class="text-xl text-white/80 max-w-2xl mx-auto" data-lang-key="contactIntro">I'm always excited to discuss new projects, creative ideas, or opportunities to collaborate. Feel free to reach out!</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- Contact Information -->
+                <div class="space-y-8" data-aos="fade-right">
+                    <div class="glass p-8 rounded-2xl">
+                        <h3 class="text-2xl font-bold text-white mb-6">Let's Connect</h3>
+
+                        <div class="space-y-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-envelope text-blue-300 text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-white/70 text-sm">Email</p>
+                                    <a href="mailto:sattyphap@gmail.com" class="text-white hover:text-blue-300 transition-colors">sattyphap@gmail.com</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-phone text-green-300 text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-white/70 text-sm">Phone</p>
+                                    <a href="tel:+855123456789" class="text-white hover:text-green-300 transition-colors">+855 93827303</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-map-marker-alt text-purple-300 text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-white/70 text-sm">Location</p>
+                                    <p class="text-white">Phnom Penh, Cambodia</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Links -->
+                        <div class="mt-8 pt-8 border-t border-white/20">
+                            <p class="text-white/70 mb-4">Follow me on social media</p>
+                            <div class="flex space-x-4">
+                                <a href="https://github.com/setthi-pheap11" class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-500/20 transition-all duration-300 hover:scale-110">
+                                    <i class="fab fa-github text-xl text-white"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-500/20 transition-all duration-300 hover:scale-110">
+                                    <i class="fab fa-linkedin text-xl text-white"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-500/20 transition-all duration-300 hover:scale-110">
+                                    <i class="fab fa-twitter text-xl text-white"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-500/20 transition-all duration-300 hover:scale-110">
+                                    <i class="fab fa-instagram text-xl text-white"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div data-aos="fade-left">
+                    <form class="contact-form space-y-6" id="contact-form">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-white/80 text-sm font-medium mb-2">Full Name</label>
+                                <input type="text" id="name" name="name" required class="form-input w-full" placeholder="Your full name">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-white/80 text-sm font-medium mb-2">Email Address</label>
+                                <input type="email" id="email" name="email" required class="form-input w-full" placeholder="your.email@example.com">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="subject" class="block text-white/80 text-sm font-medium mb-2">Subject</label>
+                            <input type="text" id="subject" name="subject" required class="form-input w-full" placeholder="What's this about?">
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-white/80 text-sm font-medium mb-2">Message</label>
+                            <textarea id="message" name="message" rows="6" required class="form-input w-full resize-none" placeholder="Tell me about your project or idea..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-full">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black/50 backdrop-blur-md text-white py-12 relative">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <!-- Brand -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Pheap setthi</h3>
+                    <p class="text-white/70 mb-4">Passionate IT Developer crafting innovative digital solutions with modern technologies.</p>
+                    <div class="flex space-x-4">
+                        <a href="https://github.com/setthi-pheap11" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:sattyphap@gmail.com" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-white/70 hover:text-white transition-colors">About</a></li>
+                        <li><a href="#skills" class="text-white/70 hover:text-white transition-colors">Skills</a></li>
+                        <li><a href="#projects" class="text-white/70 hover:text-white transition-colors">Projects</a></li>
+                        <li><a href="#contact" class="text-white/70 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Get In Touch</h4>
+                    <div class="space-y-2">
+                        <p class="text-white/70"><i class="fas fa-envelope mr-2"></i>sattyphap@gmail.com</p>
+                        <p class="text-white/70"><i class="fas fa-phone mr-2"></i>+855 93827303</p>
+                        <p class="text-white/70"><i class="fas fa-map-marker-alt mr-2"></i>Phnom Penh, Cambodia</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/20 pt-8 text-center">
+                <p class="text-white/70" data-lang-key="footerText">&copy; 2024 Pheap setthi. All rights reserved. Designed with Passion.</p>
+            </div>
+        </div>
     </footer>
 
-    <button id="scrollTopBtn" class="hidden fixed bottom-5 right-5 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-opacity duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-        </svg>
-    </button>
+    <!-- Floating Action Buttons -->
+    <div class="fixed bottom-6 right-6 flex flex-col space-y-3 z-50">
+        <button id="scrollTopBtn" class="hidden w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        <a href="mailto:sattyphap@gmail.com" class="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
+            <i class="fas fa-envelope"></i>
+        </a>
+    </div>
 
+
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
     <script>
+        // --- Loading Screen ---
+        window.addEventListener('load', function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 1500);
+        });
+
+        // --- Scroll Progress Indicator ---
+        function updateScrollProgress() {
+            const scrollProgress = document.getElementById('scroll-progress');
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = scrollPercent + '%';
+        }
+
+        // --- Particles.js Configuration ---
+        if (typeof particlesJS !== 'undefined') {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: '#ffffff' },
+                    shape: { type: 'circle' },
+                    opacity: { value: 0.5, random: false },
+                    size: { value: 3, random: true },
+                    line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+                    move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                    modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } }
+                },
+                retina_detect: true
+            });
+        }
+
+        // --- Enhanced Navbar ---
+        function updateNavbar() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.1)';
+                navbar.style.backdropFilter = 'blur(20px)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.05)';
+                navbar.style.backdropFilter = 'blur(10px)';
+            }
+        }
+
         // --- Configuration for Language Translations ---
         const translations = {
             en: {
@@ -430,10 +1149,8 @@
         const menuButton = document.getElementById('menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         const langEnBtn = document.getElementById('lang-en');
-        const langEsBtn = document.getElementById('lang-es');
         const langKmBtn = document.getElementById('lang-km'); // Khmer desktop button
         const langEnMobileBtn = document.getElementById('lang-en-mobile');
-        const langEsMobileBtn = document.getElementById('lang-es-mobile');
         const langKmMobileBtn = document.getElementById('lang-km-mobile'); // Khmer mobile button
         const scrollTopBtn = document.getElementById('scrollTopBtn');
         const navLinks = document.querySelectorAll('.nav-link');
@@ -453,22 +1170,19 @@
             });
 
             // Update active state for language buttons
-            [langEnBtn, langEsBtn, langKmBtn, langEnMobileBtn, langEsMobileBtn, langKmMobileBtn].forEach(btn => {
+            [langEnBtn, langKmBtn, langEnMobileBtn, langKmMobileBtn].forEach(btn => {
                 if (btn) btn.classList.remove('active')
             });
 
             if (lang === 'en') {
                 if (langEnBtn) langEnBtn.classList.add('active');
                 if (langEnMobileBtn) langEnMobileBtn.classList.add('active');
-            } else if (lang === 'es') {
-                if (langEsBtn) langEsBtn.classList.add('active');
-                if (langEsMobileBtn) langEsMobileBtn.classList.add('active');
             } else if (lang === 'km') {
                 if (langKmBtn) langKmBtn.classList.add('active');
                 if (langKmMobileBtn) langKmMobileBtn.classList.add('active');
             }
         }
-        
+        //
         // Function for mobile menu toggle
         function toggleMobileMenu() {
             mobileMenu.classList.toggle('hidden');
@@ -572,45 +1286,86 @@
             }
         });
 
+        // --- Contact Form Handler ---
+        function handleContactForm() {
+            const form = document.getElementById('contact-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Get form data
+                    const formData = new FormData(form);
+                    const name = formData.get('name');
+                    const email = formData.get('email');
+                    const subject = formData.get('subject');
+                    const message = formData.get('message');
+
+                    // Simple validation
+                    if (!name || !email || !subject || !message) {
+                        alert('Please fill in all fields.');
+                        return;
+                    }
+
+                    // Create mailto link
+                    const mailtoLink = `mailto:sattyphap@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+                    window.location.href = mailtoLink;
+
+                    // Reset form
+                    form.reset();
+                    alert('Thank you for your message! Your email client should open now.');
+                });
+            }
+        }
+
+        // --- Enhanced scroll event handler ---
         window.addEventListener('scroll', () => {
             handleScrollTopButton();
             updateActiveNavLink();
+            updateScrollProgress();
+            updateNavbar();
         });
-        
         // --- Initializations ---
         document.addEventListener('DOMContentLoaded', () => {
-            setLanguage(currentLang); 
-            handleFadeInSections();   
-            updateActiveNavLink();    
-            
+            // Initialize AOS (Animate On Scroll)
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    duration: 1000,
+                    easing: 'ease-in-out',
+                    once: true,
+                    mirror: false
+                });
+            }
+
+            // Initialize language and other features
+            setLanguage(currentLang);
+            handleFadeInSections();
+            updateActiveNavLink();
+            handleContactForm();
+
+            // Add smooth scrolling to all anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        const headerOffset = 80;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Add typing effect to hero title
             const heroTitle = document.querySelector('#hero h1');
-            const heroSubtitle = document.querySelector('#hero p');
-            const heroCTA = document.querySelector('#hero a');
-            const heroImage = document.querySelector('.hero-profile-img');
-
-
-            if(heroImage) heroImage.classList.add('animate-[fade-in-down_1s_ease-out]'); // Added animation for image
-            if(heroTitle) heroTitle.classList.add('animate-[fade-in-down_1s_ease-out_0.2s]'); // Slight delay for title
-            if(heroSubtitle) heroSubtitle.classList.add('animate-[fade-in-up_1s_ease-out_0.7s]'); // Adjusted delay for subtitle
-            if(heroCTA) heroCTA.classList.add('animate-[bounce-slow_2s_infinite_1.2s]'); // Adjusted delay for CTA
-
-            const styleSheet = document.createElement("style");
-            styleSheet.type = "text/css";
-            styleSheet.innerText = `
-                @keyframes fade-in-down { 0% { opacity: 0; transform: translateY(-20px); } 100% { opacity: 1; transform: translateY(0); } }
-                .animate-fade-in-down { animation: fade-in-down 0.8s ease-out forwards; }
-
-                @keyframes fade-in-up { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
-                .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; } 
-                
-                @keyframes bounce-slow {
-                    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-                    40% {transform: translateY(-10px);}
-                    60% {transform: translateY(-5px);}
-                }
-                .animate-bounce-slow { animation: bounce-slow 2s infinite; } /* Removed fixed animation-delay from class, apply in JS */
-            `;
-            document.head.appendChild(styleSheet);
+            if (heroTitle) {
+                heroTitle.style.width = '0';
+                heroTitle.style.animation = 'typing 3.5s steps(40, end) forwards, blink-caret 0.75s step-end infinite';
+            }
         });
 
     </script>
